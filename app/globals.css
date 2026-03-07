@@ -1,26 +1,92 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f4f4f5; /* slightly dimmed background */
+  --foreground: #09090b;
+  
+  --card: #ffffff; /* cards stay white to create depth */
+  --card-foreground: #09090b;
+  --card-border: #e4e4e7;
+  
+  --muted: #e4e4e7;
+  --muted-foreground: #71717a;
+  
+  --accent: #18181b;
+  --accent-hover: #27272a;
+  --accent-foreground: #fafafa;
+  
+  --border: #e4e4e7;
+  --input: #ffffff;
+  --ring: #18181b;
+  
+  --radius: 0.75rem;
+}
+
+.dark {
+  --background: #000000;
+  --foreground: #ffffff;
+  
+  --card: #0a0a0a;
+  --card-foreground: #ECEDEE;
+  --card-border: #262626;
+  
+  --muted: #111111;
+  --muted-foreground: #9BA1A6;
+  
+  --accent: #ffffff;
+  --accent-hover: #e5e5e5;
+  --accent-foreground: #000000;
+  
+  --border: #262626;
+  --input: #111111;
+  --ring: #ffffff;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-card-border: var(--card-border);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  scrollbar-gutter: stable;
+}
+
+/* Base resets elements correctly */
+*, ::before, ::after {
+  border-color: var(--border);
+}
+
+/* Thin custom scrollbar */
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+.scrollbar-thin::-webkit-scrollbar {
+  width: 4px;
+}
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: var(--border);
+  border-radius: 999px;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background-color: var(--muted-foreground);
 }
