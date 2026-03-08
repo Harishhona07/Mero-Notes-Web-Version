@@ -47,7 +47,7 @@ export default function DailyQuoteCard() {
               — {dailyQuote.author}
             </span>
             <span className="text-xs font-bold px-3 py-1.5 bg-accent/10 text-accent rounded-lg">
-              Quote of the Day
+              QUOTE OF THE DAY
             </span>
           </div>
         </div>

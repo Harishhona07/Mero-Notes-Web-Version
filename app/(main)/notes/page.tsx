@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useLayoutEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useNotes } from '@/contexts/NotesContext'
 import { useAuth } from '@/contexts/AuthContext'
-import { MdSearch, MdWavingHand } from 'react-icons/md'
+import { MdNote, MdSearch, MdWavingHand } from 'react-icons/md'
 import { formatDate } from '@/lib/utils'
 import { getCategoryIcon } from '@/lib/categoryIcons'
 import PageNav from '@/components/navigation/PageNav'
@@ -125,7 +125,7 @@ export default function NotesPage() {
       {filteredNotes.length === 0 ? (
         <div className="text-center py-20 bg-card rounded-3xl border border-dashed border-border/60">
           <div className="w-20 h-20 bg-muted rounded-full flex items-center justify-center mx-auto mb-4">
-            <MdSearch className="text-4xl text-muted-foreground opacity-50" />
+            <MdNote className="text-4xl text-muted-foreground opacity-50" />
           </div>
           <h3 className="text-xl font-bold text-foreground mb-2">No notes found</h3>
           <p className="text-muted-foreground mb-6 max-w-sm mx-auto">
@@ -148,6 +148,7 @@ export default function NotesPage() {
           {/* User Notes */}
           {filteredNotes.map((note) => {
             const category = allCategories.find(c => c.id === note.categoryId)
+            const CategoryIcon = category ? getCategoryIcon(category.icon) : null
             return (
               <div
                 key={note.id}
@@ -166,8 +167,9 @@ export default function NotesPage() {
                   <span className="text-sm font-medium text-muted-foreground/80">
                     {formatDate(note.updatedAt)}
                   </span>
-                  {category && category.id !== 'uncategorized' && (
-                    <span className="text-xs font-bold px-3 py-1.5 bg-muted text-foreground rounded-lg">
+                  {category && category.id !== 'uncategorized' && CategoryIcon && (
+                    <span className="text-xs font-bold px-3 py-1.5 bg-muted text-foreground rounded-lg inline-flex items-center gap-1.5">
+                      <CategoryIcon className="text-sm" />
                       {category.name}
                     </span>
                   )}

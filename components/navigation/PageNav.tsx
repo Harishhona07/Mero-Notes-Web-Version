@@ -1,10 +1,10 @@
 'use client'
 
 import { useRouter, usePathname } from 'next/navigation'
-import { MdNotes, MdCategory, MdSettings, MdSearch, MdRefresh } from 'react-icons/md'
+import { MdNote, MdCategory, MdSettings, MdSearch, MdRefresh } from 'react-icons/md'
 
 const navItems = [
-  { path: '/notes', label: 'Notes', icon: MdNotes },
+  { path: '/notes', label: 'Notes', icon: MdNote },
   { path: '/categories', label: 'Categories', icon: MdCategory },
   { path: '/settings', label: 'Settings', icon: MdSettings },
 ]
