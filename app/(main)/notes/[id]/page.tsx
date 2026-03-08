@@ -6,6 +6,7 @@ import { useNotes } from '@/contexts/NotesContext'
 import { MdArrowBack, MdCheck, MdDelete } from 'react-icons/md'
 import AlertDialog from '@/components/ui/AlertDialog'
 import ThemedSelect from '@/components/ui/ThemedSelect'
+import TipTapEditor from '@/components/editor/TipTapEditor'
 
 export default function EditNotePage() {
   const router = useRouter()
@@ -80,7 +81,7 @@ export default function EditNotePage() {
           <button
             onClick={handleSave}
             disabled={isSaving}
-            className="flex items-center gap-2 px-6 py-2.5 bg-accent text-accent-foreground rounded-xl font-semibold hover:opacity-90 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer shadow-sm"
+            className="cursor-pointer flex items-center gap-2 px-6 py-2.5 bg-accent text-accent-foreground rounded-xl font-semibold hover:opacity-90 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer shadow-sm"
           >
             <MdCheck className="text-xl" />
             <span>{isSaving ? 'Saving...' : 'Save Note'}</span>
@@ -106,13 +107,8 @@ export default function EditNotePage() {
           className="w-full px-0 py-4 mb-2 bg-transparent border-none text-4xl sm:text-5xl font-extrabold text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-0 transition-opacity"
         />
 
-        {/* Content Textarea */}
-        <textarea
-          placeholder="Start writing..."
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          className="w-full px-0 py-4 bg-transparent border-none text-lg text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:ring-0 resize-none min-h-[60vh] leading-relaxed"
-        />
+        {/* Rich Text Editor */}
+        <TipTapEditor content={content} onChange={setContent} placeholder="Start writing your note..." />
       </div>
     </div>
   )

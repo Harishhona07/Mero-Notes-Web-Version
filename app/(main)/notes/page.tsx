@@ -62,7 +62,9 @@ export default function NotesPage() {
   })
 
   const getPreview = (content: string) => {
-    return content.replace(/\n/g, ' ').trim().substring(0, 100) || 'No content'
+    // Strip HTML tags and get plain text preview
+    const stripped = content.replace(/<[^>]*>/g, '').replace(/\n/g, ' ').trim()
+    return stripped.substring(0, 100) || 'No content'
   }
 
   if (isLoading) {
