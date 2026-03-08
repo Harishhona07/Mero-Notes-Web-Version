@@ -20,21 +20,33 @@ interface PageNavProps {
 export default function PageNav({ searchQuery = '', onSearchChange, showSearch = true, onRefresh, isRefreshing = false }: PageNavProps) {
   const router = useRouter()
   const pathname = usePathname()
+  const activeIndex = Math.max(
+    navItems.findIndex(({ path }) => pathname === path || pathname.startsWith(`${path}/`)),
+    0
+  )
 
   return (
     <div className="flex flex-wrap items-center gap-2 mb-8">
       {/* Nav Pills */}
-      <div className="flex items-center gap-1 bg-input border border-border rounded-2xl p-1">
+      <div className="relative grid grid-cols-3 items-center bg-input border border-border rounded-2xl p-1">
+        <div
+          className="absolute top-1 bottom-1 left-1 rounded-xl bg-foreground shadow-sm will-change-transform transition-[transform,opacity] duration-300 ease-out"
+          style={{
+            width: 'calc((100% - 0.5rem) / 3)',
+            transform: `translateX(${activeIndex * 100}%)`,
+            opacity: 0.96,
+          }}
+        />
         {navItems.map(({ path, label, icon: Icon }) => {
-          const isActive = pathname === path
+          const isActive = pathname === path || pathname.startsWith(`${path}/`)
           return (
             <button
               key={path}
               onClick={() => router.push(path)}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold transition-all duration-200 whitespace-nowrap cursor-pointer ${
+              className={`relative z-10 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-semibold whitespace-nowrap cursor-pointer transition-[color,opacity,background-color] duration-300 ${
                 isActive
-                  ? 'bg-foreground text-background shadow-sm'
-                  : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                  ? 'text-background opacity-100'
+                  : 'text-muted-foreground opacity-75 hover:bg-muted hover:text-foreground hover:opacity-100'
               }`}
             >
               <Icon className="text-[1.2rem]" />

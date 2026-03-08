@@ -23,15 +23,15 @@ export default function NotesSkeleton({ contentOnly = false }: { contentOnly?: b
             <Bone className="h-11 w-28 rounded-full" />
             <Bone className="h-11 flex-1 rounded-full ml-auto" />
           </div>
-
-          {/* Category filter chips */}
-          <div className="flex gap-2 mb-8">
-            {[80, 96, 72, 88, 104, 76].map((w, i) => (
-              <div key={i} className={`h-10 rounded-full bg-muted animate-pulse`} style={{ width: w }} />
-            ))}
-          </div>
         </>
       )}
+
+      {/* Category filter chips */}
+      <div className="flex gap-2 mb-8 overflow-x-auto scrollbar-thin pb-1">
+        {[80, 96, 72, 88, 104, 76].map((w, i) => (
+          <div key={i} className="h-10 rounded-full bg-muted animate-pulse shrink-0" style={{ width: w }} />
+        ))}
+      </div>
 
       {/* Notes grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">

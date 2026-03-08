@@ -5,6 +5,7 @@ import { useRouter, useParams } from 'next/navigation'
 import { useNotes } from '@/contexts/NotesContext'
 import { MdArrowBack, MdCheck, MdDelete } from 'react-icons/md'
 import AlertDialog from '@/components/ui/AlertDialog'
+import ThemedSelect from '@/components/ui/ThemedSelect'
 
 export default function EditNotePage() {
   const router = useRouter()
@@ -93,24 +94,7 @@ export default function EditNotePage() {
           <label className="block text-sm font-semibold text-muted-foreground mb-3 uppercase tracking-wider">
             Category
           </label>
-          <div className="relative">
-            <select
-              value={categoryId}
-              onChange={(e) => setCategoryId(e.target.value)}
-              className="w-full sm:w-auto min-w-[200px] px-4 py-3 bg-secondary/30 border border-border rounded-xl text-foreground focus:outline-none focus:ring-2 focus:ring-accent appearance-none font-medium cursor-pointer transition-colors hover:bg-secondary/50"
-            >
-              {allCategories.map((cat) => (
-                <option key={cat.id} value={cat.id} className="bg-background text-foreground py-2">
-                  {cat.name}
-                </option>
-              ))}
-            </select>
-            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-muted-foreground">
-              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-              </svg>
-            </div>
-          </div>
+          <ThemedSelect value={categoryId} onChange={setCategoryId} options={allCategories} />
         </div>
 
         {/* Title Input */}

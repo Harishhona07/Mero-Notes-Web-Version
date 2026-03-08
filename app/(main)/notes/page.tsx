@@ -1,26 +1,54 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { useState, useEffect, useRef, useLayoutEffect } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useNotes } from '@/contexts/NotesContext'
 import { useAuth } from '@/contexts/AuthContext'
 import { MdSearch, MdWavingHand } from 'react-icons/md'
 import { formatDate } from '@/lib/utils'
+import { getCategoryIcon } from '@/lib/categoryIcons'
 import PageNav from '@/components/navigation/PageNav'
 import PageContainer from '@/components/layout/PageContainer'
 import PageHeader from '@/components/layout/PageHeader'
 import NotesSkeleton from '@/components/skeletons/NotesSkeleton'
-
+import DailyQuoteCard from '@/components/DailyQuoteCard'
 
 export default function NotesPage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const { notes, isLoading, isRefetching, refetch, deleteNote, allCategories } = useNotes()
   const { user } = useAuth()
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null)
+  const allChipRef = useRef<HTMLButtonElement | null>(null)
+  const categoryChipRefs = useRef<Record<string, HTMLButtonElement | null>>({})
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => { refetch() }, [])
+
+  useEffect(() => {
+    const categoryFromUrl = searchParams.get('category')
+
+    // Keep manual chip selection untouched when URL has no category query.
+    if (!categoryFromUrl) {
+      return
+    }
+
+    const exists = allCategories.some((category) => category.id === categoryFromUrl)
+    setSelectedCategoryId(exists ? categoryFromUrl : null)
+  }, [searchParams, allCategories])
+
+  useLayoutEffect(() => {
+    const target = selectedCategoryId
+      ? categoryChipRefs.current[selectedCategoryId]
+      : allChipRef.current
+
+    if (target) {
+      requestAnimationFrame(() => {
+        target.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' })
+      })
+    }
+  }, [selectedCategoryId])
 
   const firstName = user?.user_metadata?.full_name?.split(' ')[0] ?? 'there'
 
@@ -56,10 +84,11 @@ export default function NotesPage() {
         <NotesSkeleton contentOnly />
       ) : (<>
       {/* Category Filter */}
-      <div className="flex gap-2 mb-8 overflow-x-auto scrollbar-none">
+      <div className="flex gap-2 mb-8 overflow-x-auto scrollbar-thin pb-1">
         <button
+          ref={allChipRef}
           onClick={() => setSelectedCategoryId(null)}
-          className={`px-5 py-2.5 rounded-full font-semibold whitespace-nowrap transition-all duration-200 cursor-pointer ${
+          className={`px-5 py-2.5 rounded-full font-semibold whitespace-nowrap transition-colors duration-100 cursor-pointer ${
             selectedCategoryId === null
               ? 'bg-foreground text-background shadow-md'
               : 'bg-input text-muted-foreground hover:bg-muted hover:text-foreground'
@@ -67,19 +96,27 @@ export default function NotesPage() {
         >
           All
         </button>
-        {allCategories.map((category) => (
-          <button
-            key={category.id}
-            onClick={() => setSelectedCategoryId(category.id)}
-            className={`px-5 py-2.5 rounded-full font-semibold whitespace-nowrap transition-all duration-200 cursor-pointer ${
-              selectedCategoryId === category.id
-                ? 'bg-foreground text-background shadow-md'
-                : 'bg-input text-muted-foreground hover:bg-muted hover:text-foreground'
-            }`}
-          >
-            {category.name}
-          </button>
-        ))}
+        {allCategories.map((category) => {
+          const Icon = getCategoryIcon(category.icon)
+
+          return (
+            <button
+              key={category.id}
+              ref={(el) => {
+                categoryChipRefs.current[category.id] = el
+              }}
+              onClick={() => setSelectedCategoryId(category.id)}
+              className={`px-5 py-2.5 rounded-full font-semibold whitespace-nowrap transition-colors duration-100 cursor-pointer inline-flex items-center gap-2 ${
+                selectedCategoryId === category.id
+                  ? 'bg-foreground text-background shadow-md'
+                  : 'bg-input text-muted-foreground hover:bg-muted hover:text-foreground'
+              }`}
+            >
+              <Icon className="text-base shrink-0" />
+              {category.name}
+            </button>
+          )
+        })}
       </div>
 
       {/* Notes Grid */}
@@ -103,6 +140,10 @@ export default function NotesPage() {
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {/* Daily Quote Card */}
+          <DailyQuoteCard />
+
+          {/* User Notes */}
           {filteredNotes.map((note) => {
             const category = allCategories.find(c => c.id === note.categoryId)
             return (

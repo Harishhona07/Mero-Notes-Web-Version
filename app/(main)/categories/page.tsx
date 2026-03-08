@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import { useNotes } from '@/contexts/NotesContext'
 import { MdEdit, MdDelete, MdWork, MdPerson, MdLightbulb, MdChecklist, MdFolder, MdLabel, MdStar, MdFavorite, MdHome, MdShoppingCart, MdReceipt, MdSchool, MdCategory, MdFitnessCenter, MdTravelExplore, MdRestaurant, MdMusicNote, MdSportsSoccer, MdVideogameAsset, MdPalette, MdCode } from 'react-icons/md'
 import PageNav from '@/components/navigation/PageNav'
@@ -64,6 +65,7 @@ const iconOptions = [
 ]
 
 export default function CategoriesPage() {
+  const router = useRouter()
   const { categories, notes, addCategory, updateCategory, deleteCategory, isLoading, isRefetching, refetch } = useNotes()
   const [showModal, setShowModal] = useState(false)
   const [editingId, setEditingId] = useState<string | null>(null)
@@ -163,7 +165,8 @@ export default function CategoriesPage() {
           return (
             <div
               key={category.id}
-              className="group relative bg-card border border-border overflow-hidden rounded-2xl hover:shadow-md transition-all hover:-translate-y-1"
+              onClick={() => router.push(`/notes?category=${encodeURIComponent(category.id)}`)}
+              className="group relative bg-card border border-border overflow-hidden rounded-2xl hover:shadow-md transition-all hover:-translate-y-1 cursor-pointer"
             >
               <div className="p-6">
                 <div className="flex items-start justify-between mb-4">
@@ -172,14 +175,20 @@ export default function CategoriesPage() {
                   </div>
                   <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                     <button
-                      onClick={() => handleEdit(category)}
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        handleEdit(category)
+                      }}
                       className="p-2 rounded-full text-muted-foreground hover:bg-secondary hover:text-foreground transition-colors cursor-pointer"
                       title="Edit Category"
                     >
                       <MdEdit className="text-xl" />
                     </button>
                     <button
-                      onClick={() => handleDelete(category.id)}
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        handleDelete(category.id)
+                      }}
                       className="p-2 rounded-full text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-colors cursor-pointer"
                       title="Delete Category"
                     >

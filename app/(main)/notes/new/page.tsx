@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useNotes } from '@/contexts/NotesContext'
 import { MdArrowBack, MdCheck } from 'react-icons/md'
+import ThemedSelect from '@/components/ui/ThemedSelect'
 
 export default function NewNotePage() {
   const router = useRouter()
@@ -46,17 +47,7 @@ export default function NewNotePage() {
           <label className="block text-sm font-semibold text-muted-foreground mb-2">
             Category
           </label>
-          <select
-            value={categoryId}
-            onChange={(e) => setCategoryId(e.target.value)}
-            className="w-full sm:w-auto min-w-[200px] px-4 py-2.5 bg-input border border-border rounded-xl text-foreground font-medium appearance-none focus:outline-none focus:ring-2 focus:ring-ring transition-all cursor-pointer"
-          >
-            {allCategories.map((cat) => (
-              <option key={cat.id} value={cat.id}>
-                {cat.name}
-              </option>
-            ))}
-          </select>
+          <ThemedSelect value={categoryId} onChange={setCategoryId} options={allCategories} />
         </div>
 
         {/* Title Input */}
