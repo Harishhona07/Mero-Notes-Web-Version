@@ -6,7 +6,7 @@ import { createClient } from '@supabase/supabase-js';
 export async function GET() {
   try {
     // 1. Fetch quote from API Ninjas
-    const response = await fetch('https://api.api-ninjas.com/v2/quoteoftheday', {
+    const response = await fetch('https://api.api-ninjas.com/v1/quotes', {
       headers: {
         'X-Api-Key': process.env.API_NINJAS_KEY || '',
       },
