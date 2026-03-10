@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/contexts/AuthContext'
 import { useTheme } from '@/contexts/ThemeContext'
-import { MdLogout, MdLightMode, MdDarkMode, MdDevices, MdSettings, MdExpandMore } from 'react-icons/md'
+import { MdLogout, MdLightMode, MdDarkMode, MdDevices, MdSettings, MdExpandMore, MdDownload } from 'react-icons/md'
 import AlertDialog from '@/components/ui/AlertDialog'
 
 export default function Navbar() {
@@ -144,6 +144,15 @@ export default function Navbar() {
                       <MdSettings className="text-lg" />
                       Settings
                     </button>
+                    <a
+                      href="/mero-notes-4.0.0.apk"
+                      download
+                      onClick={() => setMenuOpen(false)}
+                      className="w-full px-3 py-2.5 text-left inline-flex items-center gap-2 text-foreground hover:bg-muted transition-colors cursor-pointer"
+                    >
+                      <MdDownload className="text-lg" />
+                      Download APK
+                    </a>
                     <button
                       type="button"
                       onClick={() => {

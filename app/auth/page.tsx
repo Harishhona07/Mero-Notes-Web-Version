@@ -4,6 +4,8 @@ import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/contexts/AuthContext'
 import { FcGoogle } from 'react-icons/fc'
+import { MdAndroid } from 'react-icons/md'
+import Link from 'next/link'
 
 export default function AuthPage() {
   const { user, isLoading, signInWithGoogle } = useAuth()
@@ -50,6 +52,15 @@ export default function AuthPage() {
             <FcGoogle className="text-2xl" />
             <span>Continue with Google</span>
           </button>
+          
+          <Link
+            href="/mero-notes-4.0.0.apk"
+            download
+            className="cursor-pointer mt-4 w-full flex items-center justify-center gap-2 bg-transparent text-foreground border border-border rounded-xl px-6 py-4 font-semibold text-base hover:bg-muted focus:ring-4 focus:ring-border/50 transition-all active:scale-[0.98]"
+          >
+            <MdAndroid className="text-2xl" />
+            <span>Download Android App <span className="ml-1 inline-flex items-center rounded-md border border-border bg-secondary/80 px-2 py-0.5 text-[10px] font-extrabold tracking-wide text-muted-foreground align-middle">APK</span></span>
+          </Link>
 
           <p className="text-center text-sm text-muted-foreground mt-8">
             By continuing, you confirm you are at least 13 years old and agree to our <br className="hidden sm:block"/>

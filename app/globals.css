@@ -92,6 +92,36 @@ body {
   background-color: var(--muted-foreground);
 }
 
+/* Entrance animation utilities for motion-safe: variants */
+@keyframes enter {
+  from {
+    opacity: var(--tw-enter-opacity, 1);
+    transform: translate3d(
+      var(--tw-enter-translate-x, 0),
+      var(--tw-enter-translate-y, 0),
+      0
+    );
+  }
+}
+
+@utility animate-in {
+  animation-name: enter;
+  animation-duration: 600ms;
+  animation-fill-mode: both;
+}
+
+@utility fade-in {
+  --tw-enter-opacity: 0;
+}
+
+@utility slide-in-from-bottom-2 {
+  --tw-enter-translate-y: 0.5rem;
+}
+
+@utility slide-in-from-bottom-3 {
+  --tw-enter-translate-y: 0.75rem;
+}
+
 /* TipTap Editor Styles */
 .tiptap {
   outline: none;
